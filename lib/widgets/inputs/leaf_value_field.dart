@@ -147,9 +147,9 @@ class _LeafValueFieldState extends State<LeafValueField> {
     String typeLabel = _getJsonType(val);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(Icons.label_outline, size: 16, color: Colors.grey),
           const SizedBox(width: 8),
