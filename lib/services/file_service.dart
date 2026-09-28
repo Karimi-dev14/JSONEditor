@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 class FileService {
-  /// انتخاب و باز کردن فایل JSON
+
   static Future<Map<String, dynamic>?> importJsonFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -32,7 +32,7 @@ class FileService {
     return null;
   }
 
-  /// ذخیره مستقیم روی همان فایل اولیه‌
+
   static Future<bool> saveJsonFile(dynamic jsonData, String path) async {
     try {
       String jsonString = const JsonEncoder.withIndent('  ').convert(jsonData);
@@ -43,7 +43,7 @@ class FileService {
     }
   }
 
-  /// ذخیره فایل در یک مسیر جدید (Export)
+
   static Future<String?> exportJsonFile(dynamic jsonData) async {
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: 'Save JSON File As',

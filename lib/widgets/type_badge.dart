@@ -40,9 +40,9 @@ class TypeBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = _getBadgeColor(type);
 
-    if (mode == EditorMode.fullEdit && onTypeChanged != null && type != 'Object' && type != 'Array') {
+    if (mode == EditorMode.fullEdit && onTypeChanged != null) {
       return PopupMenuButton<String>(
-        tooltip: 'تغییر نوع داده',
+        tooltip: 'Change data type',
         onSelected: onTypeChanged,
         itemBuilder: (context) => const [
           PopupMenuItem(value: 'String', child: Text('String')),
@@ -50,7 +50,7 @@ class TypeBadge extends StatelessWidget {
           PopupMenuItem(value: 'Float', child: Text('Float')),
           PopupMenuItem(value: 'Boolean', child: Text('Boolean')),
           PopupMenuItem(value: 'Null', child: Text('Null')),
-          PopupMenuItem(value: 'Dynamic', child: Text('Dynamic Input (پویا)')),
+          PopupMenuItem(value: 'Dynamic', child: Text('Dynamic Input (multiline JSON)')),
         ],
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),

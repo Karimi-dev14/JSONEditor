@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../models/editor_mode.dart';
-import 'leaf_value_field.dart';
+import 'package:json_editor/models/editor_mode.dart';
+import 'inputs/leaf_value_field.dart';
 import 'type_badge.dart';
 
 class JsonTreeNode extends StatelessWidget {
@@ -27,20 +27,46 @@ class JsonTreeNode extends StatelessWidget {
     return jsonDecode(jsonEncode(item));
   }
 
+  void _handleComplexTypeChange(String newType) {
+    switch (newType) {
+      case 'String':
+        onUpdate(value.toString());
+        break;
+      case 'Integer':
+        onUpdate(0);
+        break;
+      case 'Float':
+        onUpdate(0.0);
+        break;
+      case 'Boolean':
+        onUpdate(false);
+        break;
+      case 'Null':
+        onUpdate(null);
+        break;
+      case 'Dynamic':
+        onUpdate(const JsonEncoder.withIndent('  ').convert(value));
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     dynamic val = value;
 
     if (val is Map<String, dynamic>) {
       return ExpansionTile(
-        key: ValueKey('obj_tile_${mode.name}_$keyName'),
         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
         leading: const Icon(Icons.folder_open, color: Colors.orangeAccent, size: 20),
         title: Row(
           children: [
             Text(keyName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             const SizedBox(width: 8),
-            TypeBadge(type: 'Object', mode: mode),
+            TypeBadge(
+              type: 'Object',
+              mode: mode,
+              onTypeChanged: _handleComplexTypeChange,
+            ),
             Text(' {${val.length}}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
             const Spacer(),
             if (mode == EditorMode.fullEdit) ...[
@@ -63,7 +89,6 @@ class JsonTreeNode extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: JsonTreeNode(
-              key: ValueKey('map_node_${mode.name}_${keyName}_${entry.key}'),
               keyName: entry.key,
               value: entry.value,
               mode: mode,
@@ -93,14 +118,17 @@ class JsonTreeNode extends StatelessWidget {
 
     if (val is List) {
       return ExpansionTile(
-        key: ValueKey('arr_tile_${mode.name}_$keyName'),
         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
         leading: const Icon(Icons.data_array, color: Colors.purpleAccent, size: 20),
         title: Row(
           children: [
             Text(keyName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             const SizedBox(width: 8),
-            TypeBadge(type: 'Array', mode: mode),
+            TypeBadge(
+              type: 'Array',
+              mode: mode,
+              onTypeChanged: _handleComplexTypeChange,
+            ),
             Text(' [${val.length}]', style: const TextStyle(color: Colors.grey, fontSize: 12)),
             const Spacer(),
             if (mode == EditorMode.fullEdit) ...[
@@ -123,7 +151,6 @@ class JsonTreeNode extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: JsonTreeNode(
-              key: ValueKey('list_node_${mode.name}_${keyName}_$index'),
               keyName: '[$index]',
               value: val[index],
               mode: mode,
@@ -146,7 +173,6 @@ class JsonTreeNode extends StatelessWidget {
     }
 
     return LeafValueField(
-      key: ValueKey('leaf_node_${mode.name}_${keyName}_${val.runtimeType}'),
       keyName: keyName,
       value: val,
       mode: mode,

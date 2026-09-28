@@ -89,7 +89,7 @@ class _JsonEditorScreenState extends State<JsonEditorScreen> {
         elevation: 2,
         title: const Text('JSON Editor & Viewer', style: TextStyle(fontSize: 18)),
         actions: [
-          // سوییچ ۳ حالته انتخاب حالت ویرایش
+  
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
