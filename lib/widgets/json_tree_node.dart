@@ -33,7 +33,7 @@ class JsonTreeNode extends StatelessWidget {
 
     if (val is Map<String, dynamic>) {
       return ExpansionTile(
-        key: PageStorageKey('obj_group_$keyName'),
+        key: ValueKey('obj_tile_${mode.name}_$keyName'),
         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
         leading: const Icon(Icons.folder_open, color: Colors.orangeAccent, size: 20),
         title: Row(
@@ -63,7 +63,7 @@ class JsonTreeNode extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: JsonTreeNode(
-              key: ValueKey('map_node_${keyName}_${entry.key}'),
+              key: ValueKey('map_node_${mode.name}_${keyName}_${entry.key}'),
               keyName: entry.key,
               value: entry.value,
               mode: mode,
@@ -93,7 +93,7 @@ class JsonTreeNode extends StatelessWidget {
 
     if (val is List) {
       return ExpansionTile(
-        key: PageStorageKey('arr_group_$keyName'),
+        key: ValueKey('arr_tile_${mode.name}_$keyName'),
         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
         leading: const Icon(Icons.data_array, color: Colors.purpleAccent, size: 20),
         title: Row(
@@ -123,7 +123,7 @@ class JsonTreeNode extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: JsonTreeNode(
-              key: ValueKey('list_node_${keyName}_$index'),
+              key: ValueKey('list_node_${mode.name}_${keyName}_$index'),
               keyName: '[$index]',
               value: val[index],
               mode: mode,
@@ -146,7 +146,7 @@ class JsonTreeNode extends StatelessWidget {
     }
 
     return LeafValueField(
-      key: ValueKey('leaf_node_${keyName}_${val.runtimeType}'),
+      key: ValueKey('leaf_node_${mode.name}_${keyName}_${val.runtimeType}'),
       keyName: keyName,
       value: val,
       mode: mode,

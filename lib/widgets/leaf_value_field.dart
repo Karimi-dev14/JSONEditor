@@ -70,8 +70,9 @@ class _LeafValueFieldState extends State<LeafValueField> {
 
   TextDirection _getDirectionality(String text) {
     if (text.isEmpty) return TextDirection.ltr;
-    final firstChar = text.trim().isNotEmpty ? text.trim().codeUnitAt(0) : 0;
-    // تشخیص کاراکترهای فارسی / عربی
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return TextDirection.ltr;
+    final firstChar = trimmed.codeUnitAt(0);
     if ((firstChar >= 0x0600 && firstChar <= 0x06FF) ||
         (firstChar >= 0x0750 && firstChar <= 0x077F) ||
         (firstChar >= 0xFB50 && firstChar <= 0xFDFF) ||
@@ -169,7 +170,6 @@ class _LeafValueFieldState extends State<LeafValueField> {
       return;
     }
 
-    // پارس کردن دقیق هر نوع JSON معتبر (Object یا Array)
     if ((input.startsWith('{') && input.endsWith('}')) ||
         (input.startsWith('[') && input.endsWith(']'))) {
       try {
@@ -240,21 +240,35 @@ class _LeafValueFieldState extends State<LeafValueField> {
                 if (widget.onDuplicate != null) ...[
                   const SizedBox(width: 4),
                   IconButton(
-                    icon: const Icon(Icons.control_point_duplicate_rounded, size: 18, color: Colors.blueAccent),
+                    icon: const Icon(
+                      Icons.control_point_duplicate_rounded,
+                      size: 18,
+                      color: Colors.blueAccent,
+                    ),
                     tooltip: 'Duplicate item',
                     onPressed: widget.onDuplicate,
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                    constraints: const BoxConstraints(
+                      minWidth: 28,
+                      minHeight: 28,
+                    ),
                   ),
                 ],
                 if (widget.onDelete != null) ...[
                   const SizedBox(width: 4),
                   IconButton(
-                    icon: const Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      size: 18,
+                      color: Colors.redAccent,
+                    ),
                     tooltip: 'Delete item',
                     onPressed: widget.onDelete,
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                    constraints: const BoxConstraints(
+                      minWidth: 28,
+                      minHeight: 28,
+                    ),
                   ),
                 ],
               ],
@@ -303,15 +317,23 @@ class _LeafValueFieldState extends State<LeafValueField> {
             child: Directionality(
               textDirection: _getDirectionality(_controller.text),
               child: TextField(
-                key: ValueKey('dynamic_${widget.keyName}'),
+                key: ValueKey(
+                  'input_dyn_${widget.mode.name}_${widget.keyName}',
+                ),
                 restorationId: null,
                 controller: _controller,
                 focusNode: _focusNode,
                 style: const TextStyle(fontSize: 13),
                 decoration: InputDecoration(
                   hintText: 'Enter JSON Object, Array, Bool, Number...',
-                  hintStyle: const TextStyle(color: Colors.white30, fontSize: 11),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  hintStyle: const TextStyle(
+                    color: Colors.white30,
+                    fontSize: 11,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
                   filled: true,
                   fillColor: const Color(0xFF1E1E1E),
                   border: OutlineInputBorder(
@@ -320,7 +342,10 @@ class _LeafValueFieldState extends State<LeafValueField> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Colors.tealAccent, width: 1),
+                    borderSide: const BorderSide(
+                      color: Colors.tealAccent,
+                      width: 1,
+                    ),
                   ),
                 ),
                 onChanged: (_) => setState(() {}),
@@ -350,7 +375,9 @@ class _LeafValueFieldState extends State<LeafValueField> {
       return Align(
         alignment: Alignment.centerLeft,
         child: ToggleButtons(
-          key: ValueKey('bool_${widget.keyName}_$boolValue'),
+          key: ValueKey(
+            'toggle_bool_${widget.mode.name}_${widget.keyName}_$boolValue',
+          ),
           constraints: const BoxConstraints(minWidth: 50, minHeight: 30),
           borderRadius: BorderRadius.circular(6),
           selectedColor: Colors.black,
@@ -362,8 +389,14 @@ class _LeafValueFieldState extends State<LeafValueField> {
             widget.onUpdate(newValue);
           },
           children: const <Widget>[
-            Text('true', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
-            Text('false', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+            Text(
+              'true',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            Text(
+              'false',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
           ],
         ),
       );
@@ -378,14 +411,20 @@ class _LeafValueFieldState extends State<LeafValueField> {
         ),
         child: const Text(
           'null',
-          style: TextStyle(fontSize: 13, color: Colors.redAccent, fontStyle: FontStyle.italic),
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.redAccent,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       );
     }
 
     if (typeLabel == 'Integer' || typeLabel == 'Float') {
       return TextField(
-        key: ValueKey('${typeLabel}_${widget.keyName}'),
+        key: ValueKey(
+          'input_num_${widget.mode.name}_${typeLabel}_${widget.keyName}',
+        ),
         restorationId: null,
         controller: _controller,
         focusNode: _focusNode,
@@ -395,14 +434,22 @@ class _LeafValueFieldState extends State<LeafValueField> {
         ),
         style: const TextStyle(fontSize: 13),
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 8,
+          ),
           filled: true,
           fillColor: const Color(0xFF1E1E1E),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide.none,
+          ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(
-              color: typeLabel == 'Float' ? Colors.cyanAccent : Colors.blueAccent,
+              color: typeLabel == 'Float'
+                  ? Colors.cyanAccent
+                  : Colors.blueAccent,
               width: 1,
             ),
           ),
@@ -413,17 +460,23 @@ class _LeafValueFieldState extends State<LeafValueField> {
     return Directionality(
       textDirection: _getDirectionality(_controller.text),
       child: TextField(
-        key: ValueKey('str_${widget.keyName}'),
+        key: ValueKey('input_str_${widget.mode.name}_${widget.keyName}'),
         restorationId: null,
         controller: _controller,
         maxLines: null,
         minLines: 1,
         style: const TextStyle(fontSize: 13),
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 8,
+          ),
           filled: true,
           fillColor: const Color(0xFF1E1E1E),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide.none,
+          ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: const BorderSide(color: Colors.greenAccent, width: 1),
