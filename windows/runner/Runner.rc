@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "json_editor" "\0"
+            VALUE "CompanyName", "com.kdev" "\0"
+            VALUE "FileDescription", "JSON Editor Desktop Application" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "json_editor" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "json_editor.exe" "\0"
-            VALUE "ProductName", "json_editor" "\0"
+            VALUE "ProductName", "JSON Editor" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

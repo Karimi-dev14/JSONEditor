@@ -1,2 +1,3 @@
 # JSON Editor
-A comprehensive system for editing JSON files without needing to deal with code.
+
+A powerful and high-performance JSON Editor & Viewer desktop application built with Flutter. 
